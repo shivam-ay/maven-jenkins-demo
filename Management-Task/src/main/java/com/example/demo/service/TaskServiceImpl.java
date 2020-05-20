@@ -30,10 +30,10 @@ public class TaskServiceImpl implements TaskService
 	public ResponseEntity<List<Task>> FindByUserId(int userId)
 	{
 		List<Task> task = new ArrayList<>();
-//		for(Task t:taskDAO.findByUserId(userId))
-//		{
-//			task.add(t);
-//		}
+		for(Task t:taskDAO.findByUserUserId(userId))
+		{
+			task.add(t);
+		}
 		return ResponseEntity.ok().body(task);
 	}
 
@@ -41,10 +41,10 @@ public class TaskServiceImpl implements TaskService
 	public ResponseEntity<List<Task>> FindByProjectId(int projectId) 
 	{
 		List<Task> task = new ArrayList<>();
-//		for(Task t:taskDAO.findByProjectId(projectId))
-//		{
-//			task.add(t);
-//		}
+		for(Task t:taskDAO.findByProjectProjectId(projectId))
+		{
+			task.add(t);
+		}
 		return ResponseEntity.ok().body(task);
 	}
 
@@ -58,6 +58,28 @@ public class TaskServiceImpl implements TaskService
 	public void updateTask(Task task) 
 	{
 		taskDAO.save(task);
+	}
+
+	@Override
+	public ResponseEntity<List<Task>> FindByProjectName(String projectName)
+	{
+		List<Task> task = new ArrayList<>();
+		for(Task t:taskDAO.findByProjectProjectNameStartingWith(projectName))
+		{
+			task.add(t);
+		}
+		return ResponseEntity.ok().body(task);
+	}
+
+	@Override
+	public ResponseEntity<List<Task>> FindByUsername(String userName)
+	{
+		List<Task> task = new ArrayList<>();
+		for(Task t:taskDAO.findByUserFirstNameStartingWith(userName))
+		{
+			task.add(t);
+		}
+		return ResponseEntity.ok().body(task);
 	}
 
 }

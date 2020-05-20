@@ -10,7 +10,9 @@ import com.example.demo.model.Task;
 public interface TaskDAO extends JpaRepository<Task,Integer>
 {
 	@Query
-//	public Iterable<Task> findByUserId(int userId);
-//	public Iterable<Task> findByProjectId(int projectId);
+	public Iterable<Task> findByUserUserId(int userId);
+	public Iterable<Task> findByProjectProjectId(int projectId);
 	public Iterable<Task> findByStatus(boolean status);
+	public Iterable<Task> findByProjectProjectNameStartingWith(String projectName);
+	public Iterable<Task> findByUserFirstNameStartingWith(String firstName);
 }

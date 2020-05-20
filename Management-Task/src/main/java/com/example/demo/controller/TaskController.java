@@ -11,28 +11,35 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dao.ProjectDAO;
+import com.example.demo.dao.UserDAO;
+import com.example.demo.model.Project;
 import com.example.demo.model.Task;
+import com.example.demo.model.User;
 import com.example.demo.service.TaskService;
 
 @RestController
 public class TaskController
 {
 	@Autowired
-	public TaskService taskService;
-	
-	@GetMapping("taskByStatus/{status}")
+	private TaskService taskService;
+	@Autowired
+	private UserDAO userDAO;
+	@Autowired
+	private ProjectDAO projectDAO;
+	@GetMapping("tasksByStatus/{status}")
 	public ResponseEntity<List<Task>> getTaskByStatus(@PathVariable boolean status)
 	{
 		return taskService.FindByStatus(status);
 	}
 	
-	@GetMapping("taskByUserId/{userId}")
+	@GetMapping("tasksByUserId/{userId}")
 	public ResponseEntity<List<Task>> getTaskByUser(@PathVariable int userId)
 	{
 		return taskService.FindByUserId(userId);
 	}
 	
-	@GetMapping("taskByProjectId/{projectId}")
+	@GetMapping("tasksByProjectId/{projectId}")
 	public ResponseEntity<List<Task>> getTaskByProject(@PathVariable int projectId)
 	{
 		return taskService.FindByProjectId(projectId);
@@ -43,10 +50,31 @@ public class TaskController
 	{
 		taskService.addTask(task);
 	}
-	@PutMapping("/task")
+	@PutMapping("/tasks")
 	public void updateTask(@RequestBody Task task)
 	{
 		taskService.updateTask(task);
 	}
+	@GetMapping("/tasksByUsername")
+	public ResponseEntity<List<Task>> getTaskByUserName(String userName)
+	{
+		return taskService.FindByUsername(userName);
+	}
+	@GetMapping("/tasksByProjectname")
+	public ResponseEntity<List<Task>> getTaskByProjectName(String projectName)
+	{
+		return taskService.FindByProjectName(projectName);
+	}
 	
+	//Just to add some data (no need)
+//	@PostMapping("/user")
+//	public void addUser(@RequestBody User user)
+//	{
+//		userDAO.save(user);
+//	}
+//	@PostMapping("/project")
+//	public void addPorject(@RequestBody Project project)
+//	{
+//		projectDAO.save(project);
+//	}
 }
