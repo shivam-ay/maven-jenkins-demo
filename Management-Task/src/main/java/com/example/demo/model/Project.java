@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,11 +45,16 @@ public class Project
 	@Column(name = "status")
 	private boolean status;
 	
-	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@JsonBackReference(value = "project-task")
     private List<Task> tasks;
-	
-	@OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
-	private List<User> user;
+
+	@ManyToOne
+	@JoinTable(
+			name = "user_project",
+			joinColumns = @JoinColumn(name = "project_id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id")
+			)
+	private User user;
 }
 

@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,11 +42,11 @@ public class Task
 	@Column(name = "status")
 	private boolean status;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "project_id",nullable = false)
 	private Project project;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne( optional = false)
 	@JoinColumn(name = "user_id",nullable = false)
 	private User user;
 }

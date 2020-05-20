@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.ProjectDAO;
+import com.example.demo.dao.TaskDAO;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.model.Project;
+import com.example.demo.model.RoleName;
 import com.example.demo.model.Task;
 import com.example.demo.model.User;
 import com.example.demo.service.TaskService;
@@ -27,12 +30,19 @@ public class TaskController
 	private UserDAO userDAO;
 	@Autowired
 	private ProjectDAO projectDAO;
+	@Autowired
+	private TaskDAO taskDAO;
+	
 	@GetMapping("tasksByStatus/{status}")
 	public ResponseEntity<List<Task>> getTaskByStatus(@PathVariable boolean status)
 	{
 		return taskService.FindByStatus(status);
 	}
-	
+	@GetMapping("/tasks")
+	public List<Task> get()
+	{
+		return taskDAO.findAll();
+	}
 	@GetMapping("tasksByUserId/{userId}")
 	public ResponseEntity<List<Task>> getTaskByUser(@PathVariable int userId)
 	{
@@ -55,26 +65,36 @@ public class TaskController
 	{
 		taskService.updateTask(task);
 	}
-	@GetMapping("/tasksByUsername")
-	public ResponseEntity<List<Task>> getTaskByUserName(String userName)
+	@GetMapping("/tasksByUsername/{userName}")
+	public ResponseEntity<List<Task>> getTaskByUserName(@PathVariable String userName)
 	{
 		return taskService.FindByUsername(userName);
 	}
-	@GetMapping("/tasksByProjectname")
-	public ResponseEntity<List<Task>> getTaskByProjectName(String projectName)
+	@GetMapping("/tasksByProjectname/{projectName}")
+	public ResponseEntity<List<Task>> getTaskByProjectName(@PathVariable String projectName)
 	{
 		return taskService.FindByProjectName(projectName);
 	}
 	
 	//Just to add some data (no need)
-//	@PostMapping("/user")
-//	public void addUser(@RequestBody User user)
-//	{
-//		userDAO.save(user);
-//	}
-//	@PostMapping("/project")
-//	public void addPorject(@RequestBody Project project)
-//	{
-//		projectDAO.save(project);
-//	}
+	@PostMapping("/user")
+	public void addUser(@RequestBody User user)
+	{
+		userDAO.save(user);
+	}
+	@PostMapping("/project")
+	public void addPorject(@RequestBody Project project)
+	{
+		projectDAO.save(project);
+	}
+	@GetMapping("/user/role/{name}")
+	public List<User> getAllByRole(@PathVariable RoleName name)
+	{
+		List<User> l = new ArrayList<>();
+		for(User u:userDAO.findByRolesName(name))
+		{
+			l.add(u);
+		}
+		return l;
+	}
 }
